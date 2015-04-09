@@ -6,6 +6,6 @@ One challenge with EVPN is the amount of config that needs to be deployed to eve
 
 I have tested this with Nexus 9000 switches. With other Nexus the Python modules should work too, but slightly different (as documented by Chris Paggen). You can get the Python modules for Nexus here: https://github.com/datacenter/nexus9000/tree/master/nx-os/python/remote_client.
 
-I am planning to post a quick demo video in youtube, I will put the link here when I have it.
+Here you can see a demo of how this thing looks like, without you having to install anything: https://youtu.be/9T1qs-lBGqg
 
 WARNING: this is not designed to be used in a production network. In order to reach that stage some improvings should be done (like for example encrypting the credentials, amongst many other things). This is more a proof of concept, how the problem of complex configurations that need to be kept in sync across multiple devices can be solved.
