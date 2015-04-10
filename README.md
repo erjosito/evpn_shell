@@ -2,7 +2,7 @@
 
 This is a simple Python module that offers a way to interactively poll, create or delete networks and tenants in a VXLAN environment with an EVPN control plane.
 
-One challenge with EVPN is the amount of config that needs to be deployed to every leaf consistedly, for every network and every tenant that gets created. This project is a kind of proof concept of how easy it is using NXAPI (a REST API for Nexus switches) to build a central point from where deploying this config.
+One challenge with EVPN is the amount of config that needs to be deployed to every leaf consistedly, for every network and every tenant that gets created. This project is a kind of proof concept of how easy it is using NXAPI (an API for Nexus switches) to build a central point from where deploying this config.
 
 I have tested this with Nexus 9000 switches. With other Nexus the Python modules should work too, but slightly different (as documented by Chris Paggen). You can get the Python modules for Nexus here: https://github.com/datacenter/nexus9000/tree/master/nx-os/python/remote_client.
 
