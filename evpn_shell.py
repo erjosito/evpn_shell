@@ -20,8 +20,11 @@
 import sys
 import cmd2
 import json
-sys.path.append("/home/lab-user/remote_client/cisco")
-sys.path.append("/home/lab-user/remote_client/utils")
+# This file is supposed to be located in the remote_client folder
+#  after unpacking the N9K Python SDK modules
+#  (https://developer.cisco.com/fileMedia/download/0eb10f7e-b1ee-432a-9bef-680cb3ced417)
+sys.path.append("./cisco")
+sys.path.append("./utils")
 from nxapi_utils import NXAPITransport 
 from cisco.interface import Interface
 
