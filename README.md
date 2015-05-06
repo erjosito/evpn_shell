@@ -1,4 +1,4 @@
-# Simple EVPN shell v0.1
+# Simple EVPN shell v0.2
 
 This is a simple Python module that offers a way to interactively poll, create or delete networks and tenants in a VXLAN environment with an EVPN control plane.
 
@@ -9,3 +9,9 @@ I have tested this with Nexus 9000 switches. With other Nexus the Python modules
 Here you can see a demo of how this thing looks like, without you having to install anything: https://youtu.be/9T1qs-lBGqg
 
 WARNING: this is not designed to be used in a production network. In order to reach that stage some improvings should be done (like for example encrypting the credentials, amongst many other things). This is more a proof of concept, how the problem of complex configurations that need to be kept in sync across multiple devices can be solved.
+
+v0.2:
+ * Added per switch creation/deletion
+ * Debug log (defaults to logging to a file)
+ * getTenants bug fixed
+ * Consolidated switch list (instead of one for leafs and another one for spines)
