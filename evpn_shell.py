@@ -15,7 +15,7 @@
 #     This program provides a CLI to manage a VXLAN EVPN
 #       environment distributed on multiple switches. It
 #       helps creating tenants and VLANs.
-#     It is built on the REST API of NXOS (NX-API) and
+#     It is built on the API of NXOS (NX-API) and
 #       the python modules on it (nxapi_utils).
 #
 #     This is NOT thought to be run in a production
@@ -611,9 +611,9 @@ class evpnCli(cmd2.Cmd):
    # Add a new switch
    def do_add_switch (self, line):
       '''Add a switch to the list of managed devices
-      Syntax: add_switch leaf|spine <switch_name> <switch_ip> <username> <password> <type>
+      Syntax: add_switch leaf|spine <switch_name> <switch_ip> <username> <password>
       Example:
-              add_switch leaf n9k-1 10.1.51.155 admin cisco123 leaf'''
+              add_switch leaf n9k-1 10.1.51.155 admin cisco123'''
       args=line.split()
       if len(args)<5:
         print "Not enough arguments provided, please type 'help add_switch' for information on this command"
