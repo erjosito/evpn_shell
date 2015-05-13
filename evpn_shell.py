@@ -422,8 +422,8 @@ def getVlan ():
     if not outputs:
       print "No VLAN information could be retrieved"
       return False
-    print "SWITCH       VLAN ID     VLAN Name        VNI    Tenant         IP Address"
-    print "======       =======     =========        ===    ======         =========="
+    print "SWITCH       VLAN ID     VLAN Name             VNI    Tenant         IP Address"
+    print "======       =======     =========             ===    ======         =========="
     for output in outputs:
       mymulticli.printdebug ("Processing JSON: " + str(output[1]))
       try:
@@ -446,7 +446,7 @@ def getVlan ():
         except:
             mymulticli.printdebug ("Error processing JSON: " + vlan)
         try:
-            print ('{:<13}{:7d}     {:<16} {:<7}{:<15}{:<15}'.format(switchName, int(vlanId), vlanName, vni, tenantName, ipAddress))
+            print ('{:<13}{:7d}     {:<21} {:<7}{:<15}{:<15}'.format(switchName, int(vlanId), vlanName, vni, tenantName, ipAddress))
         except:
             mymulticli.printdebug ("Error printing info for VLAN " + vlanId + ": " + vlanName + ", " + vni + ", " + tenantName + ", " + ipAddress)
 
