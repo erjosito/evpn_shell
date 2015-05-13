@@ -404,13 +404,13 @@ def deleteSVI (vlanId, whichswitch):
      myswitches = mymulticli.getSwitch(multicli.switches, whichswitch)
    # Define command string
    command="config t ;no interface vlan " + str(vlanId)
-   #print ("Deleting SVI Vlan" + str(vlanId))
+   mymulticli.printdebug ("Deleting SVI Vlan" + str(vlanId))
    try:
       mymulticli.mclic(myswitches, command)
    except:
       print ("Error deleting SVI Vlan" + str(vlanId) + ". SVI did not exist?")
 
-# Get the new VLANs defined on all leafs
+# Get the new VLANs defined on all switches
 def getVlan ():
     command="show vlan"
     try:
@@ -418,26 +418,38 @@ def getVlan ():
       outputs=mymulticli.mclid(multicli.switches, command)
     except Exception as inst:
       print ("Error getting VLAN information: ", inst)
-      return None
+      return False
     if not outputs:
       print "No VLAN information could be retrieved"
       return False
     print "SWITCH       VLAN ID     VLAN Name        VNI    Tenant         IP Address"
     print "======       =======     =========        ===    ======         =========="
     for output in outputs:
+      mymulticli.printdebug ("Processing JSON: " + str(output[1]))
       try:
         vlans=json.loads(output[1])
+        vlans=vlans['TABLE_vlanbrief']['ROW_vlanbrief']
       except:
         print "Error processing JSON output '%s'" % output[1]
         return None
-      for vlan in vlans['TABLE_vlanbrief']['ROW_vlanbrief']:
-        switchName=output[0]
-        vlanId=vlan['vlanshowbr-vlanid-utf']
-        vlanName=vlan['vlanshowbr-vlanname']
-        vni =getVNI (switchName, vlanId)
-        tenantName=getTenant (switchName, vlanId)
-        ipAddress=getSviIp (switchName, vlanId)
-        print ('{:<13}{:7d}     {:<16} {:<7}{:<15}{:<15}'.format(switchName,int(vlanId), vlanName, vni, tenantName, ipAddress))
+      if not isinstance(vlans, list):
+          vlans=[vlans]
+      for vlan in vlans:
+        try:
+           mymulticli.printdebug ("Processing JSON for VLAN: " + str(vlan))
+           switchName=output[0]
+           vlanId=vlan['vlanshowbr-vlanid-utf']
+           vlanName=vlan['vlanshowbr-vlanname']
+           vni =getVNI (switchName, vlanId)
+           tenantName=getTenant (switchName, vlanId)
+           ipAddress=getSviIp (switchName, vlanId)
+        except:
+            mymulticli.printdebug ("Error processing JSON: " + vlan)
+        try:
+            print ('{:<13}{:7d}     {:<16} {:<7}{:<15}{:<15}'.format(switchName, int(vlanId), vlanName, vni, tenantName, ipAddress))
+        except:
+            mymulticli.printdebug ("Error printing info for VLAN " + vlanId + ": " + vlanName + ", " + vni + ", " + tenantName + ", " + ipAddress)
+
 
 # Returns the VNI corresponding to a specific VLAN, on a specific switch
 def getVNI (switchName, vlanId):
