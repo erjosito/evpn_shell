@@ -8,6 +8,8 @@ I have tested this with Nexus 9000 switches. With other Nexus the Python modules
 
 Here you can see a demo of how this thing looks like, without you having to install anything: https://youtu.be/9T1qs-lBGqg
 
+INSTALLATION: download and unpack the NXAPI libraries in https://developer.cisco.com/fileMedia/download/0eb10f7e-b1ee-432a-9bef-680cb3ced417. This will create a “remote_client” directory. Download the evpn_shell.py script into that directory, and run it from there. Install the required Python modules if missing (cmd2, sys, json, datetime). You will probably need to install the lxml and pexpect Python modules, so that the NXAPI libraries work correctly.
+
 WARNING: this is not designed to be used in a production network. In order to reach that stage some improvings should be done (like for example encrypting the credentials, amongst many other things). This is more a proof of concept, how the problem of complex configurations that need to be kept in sync across multiple devices can be solved.
 
 v0.2:
