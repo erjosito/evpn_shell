@@ -1,8 +1,12 @@
 #!/usr/bin/python
 #
 #     VXLAN EVPN Shell
-#     v0.2
+#     v0.3
 #
+#     - v0.3:
+#       * Added the command "ip forward" on each SVI for the L3 VNI
+#       * Added the multicast address information to the "show_vlans" command
+#       * Change log defaults to NOT logging
 #     - v0.2:
 #       * Added per switch creation/deletion
 #       * Debug log
@@ -41,8 +45,8 @@ from cisco.interface import Interface
 ############################
 class multicli:
   switches=[]
-  debug = True
-  debugtofile = True
+  debug = False
+  debugtofile = False
   debugfilename = "evpn.log"
 
   # Prints a debug line either to a file or to stdout
@@ -208,9 +212,10 @@ def createTenant (tenant, l3Vlan, l3Vni, bgpId, whichswitch):
       mymulticli.mclic(myswitches, command)
    except Exception as inst:
       print "Error creating VRF " + tenant + ": ", inst
+
    # Create SVI for symmetric routing
    mymulticli.printdebug ("Creating SVI Vlan" + str(l3Vlan))
-   command="conf t ; interface vlan " + str(l3Vlan) + " ; vrf member " + tenant + " ; no shutdown"
+   command="conf t ; interface vlan " + str(l3Vlan) + " ; vrf member " + tenant + " ; ip forward ; no shutdown"
    try:
       mymulticli.mclic(myswitches, command)
    except:
@@ -422,8 +427,8 @@ def getVlan ():
     if not outputs:
       print "No VLAN information could be retrieved"
       return False
-    print "SWITCH       VLAN ID     VLAN Name             VNI    Tenant         IP Address"
-    print "======       =======     =========             ===    ======         =========="
+    print "SWITCH       VLAN ID     VLAN Name             VNI    Tenant         IP Address          Multicast group"
+    print "======       =======     =========             ===    ======         ==========          ==============="
     for output in outputs:
       mymulticli.printdebug ("Processing JSON: " + str(output[1]))
       try:
@@ -443,12 +448,13 @@ def getVlan ():
            vni =getVNI (switchName, vlanId)
            tenantName=getTenant (switchName, vlanId)
            ipAddress=getSviIp (switchName, vlanId)
+           mcast=getMcast(switchName, vni)
         except:
             mymulticli.printdebug ("Error processing JSON: " + vlan)
         try:
-            print ('{:<13}{:7d}     {:<21} {:<7}{:<15}{:<15}'.format(switchName, int(vlanId), vlanName, vni, tenantName, ipAddress))
+            print ('{:<13}{:7d}     {:<21} {:<7}{:<15}{:<20}{:<20}'.format(switchName, int(vlanId), vlanName, vni, tenantName, ipAddress, mcast))
         except:
-            mymulticli.printdebug ("Error printing info for VLAN " + vlanId + ": " + vlanName + ", " + vni + ", " + tenantName + ", " + ipAddress)
+            mymulticli.printdebug ("Error printing info for VLAN " + vlanId + ": " + vlanName + ", " + vni + ", " + tenantName + ", " + ipAddress + ", " + mcast)
 
 
 # Returns the VNI corresponding to a specific VLAN, on a specific switch
@@ -462,6 +468,19 @@ def getVNI (switchName, vlanId):
       except:
          vni=None
       return vni
+
+# Returns the multicast address corresponding to a specific VNI, on a specific switch
+def getMcast (switchName, vni):
+      command="show nve vni " + str(vni)
+      mymulticli = multicli()
+      output=mymulticli.sclid(switchName, command)
+      try:
+         segment=json.loads(output)
+         mcast=segment['TABLE_nve_vni']['ROW_nve_vni']['mcast']
+      except:
+         mcast=None
+      return mcast
+
 
 # Returns the tenant under which a VLAN is configured in a specific switch
 def getTenant (switchName, vlanId):
