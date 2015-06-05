@@ -37,7 +37,8 @@ import datetime
 sys.path.append("./cisco")
 sys.path.append("./utils")
 from nxapi_utils import NXAPITransport 
-from cisco.interface import Interface
+#Not using this library any more
+#from cisco.interface import Interface
 
 
 ############################
