@@ -1,4 +1,4 @@
-# Simple EVPN shell v0.2
+# Simple EVPN shell v0.3
 
 This is a simple Python module that offers a way to interactively poll, create or delete networks and tenants in a VXLAN environment with an EVPN control plane.
 
@@ -17,3 +17,9 @@ v0.2:
  * Debug log (defaults to logging to a file)
  * getTenants bug fixed
  * Consolidated switch list (instead of one for leafs and another one for spines)
+v0.3:
+ * Added the command "ip forward" on each SVI for the L3 VNI
+ * Added the multicast address information to the "show_vlans" command
+ * Change log defaults to NOT logging
+ * Added some input and advice from Mike Timm to make the code more readable
+
