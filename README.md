@@ -17,6 +17,7 @@ v0.2:
  * Debug log (defaults to logging to a file)
  * getTenants bug fixed
  * Consolidated switch list (instead of one for leafs and another one for spines)
+
 v0.3:
  * Added the command "ip forward" on each SVI for the L3 VNI
  * Added the multicast address information to the "show_vlans" command
